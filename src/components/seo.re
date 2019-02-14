@@ -1,8 +1,30 @@
-
-let component = ReasonReact.statelessComponent("Seo");
+let component = ReasonReact.statelessComponent("SEO");
 module Helmet = Gatsby.Helmet;
 
-let make = (~description=?, ~lang="en", ~meta=[], ~keywords=[], ~title, _children) => {
+let make =
+    (~description=?, ~lang="en", ~meta=[], ~keywords=[], ~title, _children) => {
   ...component,
-  render: _self => <Helmet title="Hi" />
+  render: _self => <Helmet title meta />,
 };
+
+
+[@bs.deriving abstract]
+type jsProps = {
+  description: Js.nullable(string),
+  lang: string,
+  keywords: list(string),
+  title: string
+};
+
+
+let default =
+  ReasonReact.wrapReasonForJs(~component, jsProps =>
+    make(
+      ~title=jsProps->titleGet,
+      ~description=Js.Nullable.toOption(jsProps->descriptionGet),
+      ~lang=jsProps->langGet,
+      ~keywords=jsProps->keywordsGet,
+      [||],
+    )
+  );
+  

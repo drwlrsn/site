@@ -21,5 +21,6 @@
   "refmt": 3,
   "ppx-flags": [
     "graphql_ppx/ppx"
-  ]
+  ],
+  "reason": {"react-jsx" : 2}
 }

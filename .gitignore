@@ -74,4 +74,5 @@ yarn-error.log
 .history
 .vscode
 lib
-
+bsb.lock
+.merlin
