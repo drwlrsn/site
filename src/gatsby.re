@@ -30,18 +30,34 @@ module Helmet = {
   [@bs.module "react-helmet"]
   external helmet: ReasonReact.reactClass = "default";
 
-  type htmlAttributes= {lang: string};
-  type meta = {
-    name: string,
-    content: string,
-  };
+  type htmlAttributes = {. "lang": string};
+//   type nameMeta = {
+//     .
+//     "name": string,
+//     "content": string,
+//   };
+
+//   type propertyMeta = {
+//     .
+//     "property": string,
+//     "content": string,
+//   };
+
+// // type 
+
+//   type meta = | Property(propertyMeta) | Name(nameMeta);
+
+//   let a = Name({"name": "thing", "content": "whatever"});
+
+type meta = Js.Dict.t(string);
+  
 
   [@bs.deriving abstract]
   type jsProps = {
     htmlAttributes: Js.nullable(htmlAttributes),
     title: string,
     titleTemplate: Js.nullable(string),
-    meta: Js.nullable(list(meta)),
+    meta: array(meta),
   };
 
   let make =
@@ -50,35 +66,40 @@ module Helmet = {
         ~titleTemplate: option(string)=?,
         ~meta: option(list(meta))=?,
         ~title,
-        children
-      ) =>
+        children,
+      ) => {
+        let meta = switch meta {
+        | Some(meta) => Array.of_list(meta)
+        | None => [||]
+        };
     ReasonReact.wrapJsForReason(
       ~reactClass=helmet,
       ~props=
         jsProps(
           ~htmlAttributes=Js.Nullable.fromOption(htmlAttributes),
           ~titleTemplate=Js.Nullable.fromOption(titleTemplate),
-          ~meta=Js.Nullable.fromOption(meta),
-          ~title
+          ~meta,
+          ~title,
         ),
-        children
+      children,
     );
+  };
 };
 /*
-module StaticQuery = {
-  [@bs.module "gatsby"]
-  external staticQuery: ReasonReact.reactClass = "StaticQuery";
-  type render = unit => ReasonReact.reactElement;
+ module StaticQuery = {
+   [@bs.module "gatsby"]
+   external staticQuery: ReasonReact.reactClass = "StaticQuery";
+   type render = unit => ReasonReact.reactElement;
 
-  [@bs.deriving abstract]
-  type jsProps = {
-    query: unit => unit,
-    render: unit => ReasonReact.reactElement,
-  };
-  let make = (~query, ~render, _children) =>
-    ReasonReact.wrapJsForReason(
-      ~reactClass=staticQuery,
-      ~props=jsProps(~query, ~render),
-    );
-};
-*/
+   [@bs.deriving abstract]
+   type jsProps = {
+     query: unit => unit,
+     render: unit => ReasonReact.reactElement,
+   };
+   let make = (~query, ~render, _children) =>
+     ReasonReact.wrapJsForReason(
+       ~reactClass=staticQuery,
+       ~props=jsProps(~query, ~render),
+     );
+ };
+ */

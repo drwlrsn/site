@@ -2,6 +2,7 @@
 'use strict';
 
 var $$String = require("bs-platform/lib/js/string.js");
+var Js_dict = require("bs-platform/lib/js/js_dict.js");
 var Pervasives = require("bs-platform/lib/js/pervasives.js");
 var Caml_option = require("bs-platform/lib/js/caml_option.js");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
@@ -24,15 +25,43 @@ function make(description, $staropt$star, $staropt$star$1, $staropt$star$2, titl
           /* willUpdate */component[/* willUpdate */7],
           /* shouldUpdate */component[/* shouldUpdate */8],
           /* render */(function (_self) {
-              var meta$1 = Pervasives.$at(meta, /* :: */[
-                    /* record */[
-                      /* name */"keywords",
-                      /* content */$$String.concat(", ", keywords)
+              var a = Js_dict.fromList(/* :: */[
+                    /* tuple */[
+                      "name",
+                      "keywords"
                     ],
-                    /* [] */0
+                    /* :: */[
+                      /* tuple */[
+                        "content",
+                        $$String.concat(", ", keywords)
+                      ],
+                      /* [] */0
+                    ]
                   ]);
-              var htmlAttributes = /* record */[/* lang */lang];
-              return ReasonReact.element(undefined, undefined, Gatsby$DrewSite.Helmet[/* make */0](htmlAttributes, undefined, meta$1, title, /* array */[]));
+              var b = Js_dict.fromList(/* :: */[
+                    /* tuple */[
+                      "name",
+                      "description"
+                    ],
+                    /* :: */[
+                      /* tuple */[
+                        "content",
+                        "replace me with metaDescription"
+                      ],
+                      /* [] */0
+                    ]
+                  ]);
+              var m = Pervasives.$at(meta, /* :: */[
+                    a,
+                    /* :: */[
+                      b,
+                      /* [] */0
+                    ]
+                  ]);
+              var htmlAttributes = {
+                lang: lang
+              };
+              return ReasonReact.element(undefined, undefined, Gatsby$DrewSite.Helmet[/* make */0](Caml_option.some(htmlAttributes), "%s | Replace me with: data.site.siteMetadata.title}", m, title, /* array */[]));
             }),
           /* initialState */component[/* initialState */10],
           /* retainedProps */component[/* retainedProps */11],
@@ -42,7 +71,7 @@ function make(description, $staropt$star, $staropt$star$1, $staropt$star$2, titl
 }
 
 var $$default = ReasonReact.wrapReasonForJs(component, (function (jsProps) {
-        return make(Caml_option.some(Caml_option.nullable_to_opt(jsProps.description)), jsProps.lang, undefined, jsProps.keywords, jsProps.title, /* array */[]);
+        return make(Caml_option.some(Caml_option.nullable_to_opt(jsProps.description)), jsProps.lang, jsProps.meta, jsProps.keywords, jsProps.title, /* array */[]);
       }));
 
 var Helmet = 0;
